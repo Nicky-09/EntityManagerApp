@@ -5,6 +5,7 @@ import axios from "axios";
 
 const CarList = () => {
   const [carList, setCarList] = useState([]);
+  const [taskColumns, setTaskColumns] = useState([]);
 
   const handleFinish = (values, actionType) => {
     if (actionType === "Add") {
@@ -19,6 +20,51 @@ const CarList = () => {
       .then((response) => response.json())
       .then((data) => {
         setCarList(data);
+        if (data.length > 0) {
+          const taskKeys = Object.keys(data[0]);
+          console.log(taskKeys);
+
+          const taskColumns = taskKeys
+            .map((key) => {
+              if (key === "car_details") {
+                return [
+                  {
+                    title: "Car num",
+                    dataIndex: ["car_details", "car_number"],
+                    key: "car_number",
+                    render: (text, record) => (
+                      <span>{record.car_details?.car_number}</span>
+                    ),
+                  },
+                  {
+                    title: "Car eng",
+                    dataIndex: ["car_details", "car_engine"],
+                    key: "car_engine",
+                    render: (text, record) => (
+                      <span>{record.car_details?.car_engine}</span>
+                    ),
+                  },
+                  {
+                    title: "Car mod",
+                    dataIndex: ["car_details", "car_model"],
+                    key: "car_model",
+                    render: (text, record) => (
+                      <span>{record.car_details?.car_model}</span>
+                    ),
+                  },
+                ];
+              }
+
+              return {
+                title: key.toUpperCase(),
+                dataIndex: key,
+                key,
+              };
+            })
+            .flat();
+
+          setTaskColumns(taskColumns);
+        }
       })
       .catch((error) => {
         console.error("Error fetching task list:", error);
@@ -111,38 +157,38 @@ const CarList = () => {
     });
   };
 
-  const carColumns = [
-    {
-      title: "Car ID",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
-      title: "Car Name",
-      dataIndex: "car_name",
-      key: "car_name",
-    },
-    {
-      title: "Car Number",
-      dataIndex: ["car_details", "car_number"],
-      key: "car_number",
-    },
-    {
-      title: "Car Engine",
-      dataIndex: ["car_details", "car_engine"],
-      key: "car_engine",
-    },
-    {
-      title: "Car Model",
-      dataIndex: ["car_details", "car_model"],
-      key: "car_model",
-    },
-  ];
+  // const carColumns = [
+  //   {
+  //     title: "Car ID",
+  //     dataIndex: "id",
+  //     key: "id",
+  //   },
+  //   {
+  //     title: "Car Name",
+  //     dataIndex: "car_name",
+  //     key: "car_name",
+  //   },
+  //   {
+  //     title: "Car Number",
+  //     dataIndex: ["car_details", "car_number"],
+  //     key: "car_number",
+  //   },
+  //   {
+  //     title: "Car Engine",
+  //     dataIndex: ["car_details", "car_engine"],
+  //     key: "car_engine",
+  //   },
+  //   {
+  //     title: "Car Model",
+  //     dataIndex: ["car_details", "car_model"],
+  //     key: "car_model",
+  //   },
+  // ];
 
   return (
     <div>
       <CustomTable
-        columns={carColumns}
+        columns={taskColumns}
         dataSource={carList}
         name={"Car"}
         tasks={carList}

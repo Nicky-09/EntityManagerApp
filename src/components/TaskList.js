@@ -8,6 +8,7 @@ import moment from "moment";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
+  const [taskColumns, setTaskColumns] = useState([]);
 
   const handleFinish = (values, actionType) => {
     if (actionType === "Add") {
@@ -64,42 +65,43 @@ const TaskList = () => {
       // });
       setTasks(data);
 
-      // if (data.length > 0) {
-      //   const taskKeys = Object.keys(data[0]);
+      if (data.length > 0) {
+        const taskKeys = Object.keys(data[0]);
+        console.log(taskKeys);
 
-      //   const taskColumns = taskKeys
-      //     .map((key) => {
-      //       if (key === "extra") {
-      //         return [
-      //           {
-      //             title: "Start Date",
-      //             dataIndex: ["extra", "start_date"],
-      //             key: "start_date",
-      //             render: (text, record) => (
-      //               <span>{record.extra?.start_date}</span>
-      //             ),
-      //           },
-      //           {
-      //             title: "End Date",
-      //             dataIndex: ["extra", "end_date"],
-      //             key: "end_date",
-      //             render: (text, record) => (
-      //               <span>{record.extra?.end_date}</span>
-      //             ),
-      //           },
-      //         ];
-      //       }
+        const taskColumns = taskKeys
+          .map((key) => {
+            if (key === "extra") {
+              return [
+                {
+                  title: "Start Date",
+                  dataIndex: ["extra", "start_date"],
+                  key: "start_date",
+                  render: (text, record) => (
+                    <span>{record.extra?.start_date}</span>
+                  ),
+                },
+                {
+                  title: "End Date",
+                  dataIndex: ["extra", "end_date"],
+                  key: "end_date",
+                  render: (text, record) => (
+                    <span>{record.extra?.end_date}</span>
+                  ),
+                },
+              ];
+            }
 
-      //       return {
-      //         title: key.toUpperCase(),
-      //         dataIndex: key,
-      //         key,
-      //       };
-      //     })
-      //     .flat();
+            return {
+              title: key.toUpperCase(),
+              dataIndex: key,
+              key,
+            };
+          })
+          .flat();
 
-      //   setTaskColumns(taskColumns);
-      // }
+        setTaskColumns(taskColumns);
+      }
     } catch (error) {
       console.error("Error fetching task list:", error);
     }
@@ -165,38 +167,38 @@ const TaskList = () => {
     });
   };
 
-  const taskColumns = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-    },
-    {
-      title: "Start Date",
-      dataIndex: ["extra", "start_date"],
-      key: "start_date",
-      // render: (text) => (text ? moment(text).format("YYYY-MM-DD") : ""), // Check if text is available before formatting
+  // const taskColumns = [
+  //   {
+  //     title: "ID",
+  //     dataIndex: "id",
+  //     key: "id",
+  //   },
+  //   {
+  //     title: "Title",
+  //     dataIndex: "title",
+  //     key: "title",
+  //   },
+  //   {
+  //     title: "Description",
+  //     dataIndex: "description",
+  //     key: "description",
+  //   },
+  //   {
+  //     title: "Start Date",
+  //     dataIndex: ["extra", "start_date"],
+  //     key: "start_date",
+  //     // render: (text) => (text ? moment(text).format("YYYY-MM-DD") : ""), // Check if text is available before formatting
 
-      inputType: "date",
-    },
-    {
-      title: "End Date",
-      dataIndex: ["extra", "end_date"],
-      key: "end_date",
-      inputType: "date",
-      // render: (text) => (text ? moment(text).format("YYYY-MM-DD") : ""), // Check if text is available before formatting
-    },
-  ];
+  //     inputType: "date",
+  //   },
+  //   {
+  //     title: "End Date",
+  //     dataIndex: ["extra", "end_date"],
+  //     key: "end_date",
+  //     inputType: "date",
+  //     // render: (text) => (text ? moment(text).format("YYYY-MM-DD") : ""), // Check if text is available before formatting
+  //   },
+  // ];
 
   return (
     <div>

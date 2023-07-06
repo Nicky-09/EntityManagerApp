@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {
+  CarOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
+  ScheduleOutlined,
   UserOutlined,
-  VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Button, theme } from "antd";
 import TaskList from "./components/TaskList";
@@ -49,17 +49,17 @@ const App = () => {
           items={[
             {
               key: "1",
-              icon: <UserOutlined />,
+              icon: <ScheduleOutlined />,
               label: "Task",
             },
             {
               key: "2",
-              icon: <VideoCameraOutlined />,
+              icon: <CarOutlined />,
               label: "Car",
             },
             {
               key: "3",
-              icon: <UploadOutlined />,
+              icon: <UserOutlined />,
               label: "Employee",
             },
           ]}

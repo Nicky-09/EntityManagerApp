@@ -5,12 +5,50 @@ import { Modal } from "antd";
 
 const EmployeeList = () => {
   const [employeeList, setEmployeeList] = useState([]);
+  const [employeeColumns, setEmployeeColumns] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:3000/employee")
       .then((response) => response.json())
       .then((data) => {
         setEmployeeList(data);
+        if (data.length > 0) {
+          const taskKeys = Object.keys(data[0]);
+          console.log(taskKeys);
+
+          const taskColumns = taskKeys
+            .map((key) => {
+              if (key === "employee_details") {
+                return [
+                  {
+                    title: "Name",
+                    dataIndex: ["employee_details", "name"],
+                    key: "name",
+                    render: (text, record) => (
+                      <span>{record.employee_details?.name}</span>
+                    ),
+                  },
+                  {
+                    title: "Address",
+                    dataIndex: ["employee_details", "address"],
+                    key: "address",
+                    render: (text, record) => (
+                      <span>{record.employee_details?.address}</span>
+                    ),
+                  },
+                ];
+              }
+
+              return {
+                title: key.toUpperCase(),
+                dataIndex: key,
+                key,
+              };
+            })
+            .flat();
+
+          setEmployeeColumns(taskColumns);
+        }
       })
       .catch((error) => {
         console.error("Error fetching task list:", error);
@@ -48,28 +86,28 @@ const EmployeeList = () => {
     setEmployeeList([...employeeList, newEmployee]);
   };
 
-  const employeeColumns = [
-    {
-      title: "Employee ID",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
-      title: "Position",
-      dataIndex: "position",
-      key: "position",
-    },
-    {
-      title: "Name",
-      dataIndex: ["employee_details", "name"],
-      key: "name",
-    },
-    {
-      title: "Address",
-      dataIndex: ["employee_details", "address"],
-      key: "address",
-    },
-  ];
+  // const employeeColumns = [
+  //   {
+  //     title: "Employee ID",
+  //     dataIndex: "id",
+  //     key: "id",
+  //   },
+  //   {
+  //     title: "Position",
+  //     dataIndex: "position",
+  //     key: "position",
+  //   },
+  //   {
+  //     title: "Name",
+  //     dataIndex: ["employee_details", "name"],
+  //     key: "name",
+  //   },
+  //   {
+  //     title: "Address",
+  //     dataIndex: ["employee_details", "address"],
+  //     key: "address",
+  //   },
+  // ];
 
   const handleEditTask = (record) => {
     // setEditingTask(record);

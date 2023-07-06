@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Button, Modal, Table } from "antd";
+import { Button, Modal, Space, Table } from "antd";
 import CustomForm from "./CustomForm";
 import moment from "moment";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const CustomTable = ({
   dataSource,
@@ -59,7 +60,7 @@ const CustomTable = ({
   };
 
   const handleSubmit = (values) => {
-    // closeModal();
+    closeModal();
     setIsModalOpen(false);
     handleFinish(values, actionType);
   };
@@ -81,19 +82,21 @@ const CustomTable = ({
 
   const taskActions = [
     {
-      title: "Edit",
-      dataIndex: "edit",
-      key: "edit",
+      title: "Actions",
+      key: "action",
       render: (_, record) => (
-        <Button onClick={() => editCallback(record)}>Edit</Button>
-      ),
-    },
-    {
-      title: "Delete",
-      dataIndex: "delete",
-      key: "delete",
-      render: (_, record) => (
-        <Button onClick={() => handleDeleteTask(record)}>Delete</Button>
+        <Space size="middle">
+          <Button
+            onClick={() => editCallback(record)}
+            icon={<EditOutlined />}
+            style={{ border: "none" }}
+          />
+          <Button
+            onClick={() => handleDeleteTask(record)}
+            icon={<DeleteOutlined />}
+            style={{ border: "none" }}
+          />
+        </Space>
       ),
     },
   ];
