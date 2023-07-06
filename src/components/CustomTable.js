@@ -7,8 +7,6 @@ const CustomTable = ({
   columns,
   name,
   handleFinish,
-  tasks,
-  handleEditTask,
   handleDeleteTask,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,7 +34,6 @@ const CustomTable = ({
     setFormData(record);
     setFormTitle(`Edit ${name}`);
     setActionType("Edit");
-    handleEditTask(record);
   };
 
   const handleAdd = () => {
@@ -82,7 +79,6 @@ const CustomTable = ({
         {isModalOpen && (
           <CustomForm
             onFinish={handleSubmit}
-            tasks={tasks}
             columns={columns}
             data={formData}
             resetForm={resetForm}

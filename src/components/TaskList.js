@@ -46,11 +46,6 @@ const TaskList = () => {
     setTasks([...tasks, newTask]);
   };
 
-  const handleEditTask = (record) => {
-    // setEditingTask(record);
-    // setIsEditModalVisible(true);
-  };
-
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -103,31 +98,32 @@ const TaskList = () => {
     }
   };
 
-  // const handleFinish = (newTask) => {
-  //   setTasks([...tasks, newTask]);
-  //   setIsModalVisible(false);
-  // };
-
-  // const handleCancelEdit = () => {
-  //   setEditingTask(null);
-  //   setIsEditModalVisible(false);
-  // };
-
   const callEditValues = (editedTask) => {
     // Find the index of the edited task in the tasks array
+    const { id, title, description, start_date, end_date } = editedTask;
+
+    const updatedTask = {
+      id,
+      title,
+      description,
+      extra: {
+        start_date,
+        end_date,
+      },
+    };
     const taskIndex = tasks.findIndex((task) => task.id === editedTask.id);
     console.log({ taskIndex });
     if (taskIndex !== -1) {
       // Create a new tasks array with the edited task
       const updatedTasks = [...tasks];
-      updatedTasks[taskIndex] = editedTask;
+      updatedTasks[taskIndex] = updatedTask;
 
       setTasks(updatedTasks);
       // setIsEditModalVisible(false);
 
       // Perform the API call to update the task
       axios
-        .put(`http://localhost:3000/task/${editedTask.id}`, editedTask)
+        .put(`http://localhost:3000/task/${editedTask.id}`, updatedTask)
         .then((response) => {
           console.log("Task successfully updated:", response.data);
         })
@@ -193,21 +189,12 @@ const TaskList = () => {
 
   return (
     <div>
-      {/* <Modal
-        title="Edit Task"
-        open={isEditModalVisible}
-        onCancel={handleCancelEdit}
-        footer={null}
-      >
-        {editingTask && <CustomForm />}
-      </Modal> */}
       <CustomTable
         dataSource={tasks}
         columns={taskColumns}
         name={"Task"}
         tasks={tasks}
         handleFinish={handleFinish}
-        handleEditTask={handleEditTask}
         handleDeleteTask={handleDeleteTask}
       />
     </div>

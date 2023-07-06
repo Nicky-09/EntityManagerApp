@@ -1,25 +1,11 @@
 import { Button, Form, Input } from "antd";
 import React, { useEffect } from "react";
 
-const CustomForm = ({ onFinish, tasks, columns, data, resetForm }) => {
+const CustomForm = ({ onFinish, columns, data, resetForm }) => {
   const [form] = Form.useForm();
-  console.log({ data });
-
-  // useEffect(() => {
-  //   if (tasks) {
-  //     // Prefill the form fields with the task data
-  //     form.setFieldsValue({
-  //       title: tasks.title,
-  //       description: tasks.description,
-  //       start_date: moment(task.extra.start_date, "DD-MM-YYYY"),
-  //       end_date: moment(task.extra.end_date, "DD-MM-YYYY"),
-  //     });
-  //   }
-  // }, [form, task]);
-
-  //column mai key map or for every columnkey value taskdata
 
   useEffect(() => {
+    // customData(data);
     resetForm && form.resetFields();
     form.setFieldsValue(data);
   }, [data]);

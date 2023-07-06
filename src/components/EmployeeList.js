@@ -82,6 +82,16 @@ const EmployeeList = () => {
   // };
 
   const callEditValues = (editedTask) => {
+    const { id, position, name, address } = editedTask;
+
+    const updatedTask = {
+      id,
+      position,
+      employee_details: {
+        name,
+        address,
+      },
+    };
     // Find the index of the edited task in the tasks array
     const taskIndex = employeeList.findIndex(
       (task) => task.id === editedTask.id
@@ -90,13 +100,13 @@ const EmployeeList = () => {
     if (taskIndex !== -1) {
       // Create a new tasks array with the edited task
       const updatedTasks = [...employeeList];
-      updatedTasks[taskIndex] = editedTask;
+      updatedTasks[taskIndex] = updatedTask;
 
       setEmployeeList(updatedTasks);
 
       // Perform the API call to update the task
       axios
-        .put(`http://localhost:3000/employee/${editedTask.id}`, editedTask)
+        .put(`http://localhost:3000/employee/${editedTask.id}`, updatedTask)
         .then((response) => {
           console.log("Employee successfully updated:", response.data);
         })

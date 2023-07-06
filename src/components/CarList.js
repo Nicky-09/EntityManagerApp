@@ -54,19 +54,30 @@ const CarList = () => {
   };
 
   const callEditValues = (editedTask) => {
+    const { id, car_name, car_number, car_engine, car_model } = editedTask;
+
+    const updatedTask = {
+      id,
+      car_name,
+      car_details: {
+        car_number,
+        car_engine,
+        car_model,
+      },
+    };
     // Find the index of the edited task in the tasks array
     const taskIndex = carList.findIndex((task) => task.id === editedTask.id);
 
     if (taskIndex !== -1) {
       // Create a new tasks array with the edited task
       const updatedTasks = [...carList];
-      updatedTasks[taskIndex] = editedTask;
+      updatedTasks[taskIndex] = updatedTask;
 
       setCarList(updatedTasks);
 
       // Perform the API call to update the task
       axios
-        .put(`http://localhost:3000/cars/${editedTask.id}`, editedTask)
+        .put(`http://localhost:3000/cars/${editedTask.id}`, updatedTask)
         .then((response) => {
           console.log("Car successfully updated:", response.data);
         })
