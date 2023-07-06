@@ -4,12 +4,12 @@ import { Modal } from "antd";
 import "./list.css";
 import axios from "axios";
 import CustomTable from "./CustomTable";
+import moment from "moment";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
 
   const handleFinish = (values, actionType) => {
-    console.log("aaya");
     if (actionType === "Add") {
       callAddValues(values);
     } else if (actionType === "Edit") {
@@ -18,7 +18,6 @@ const TaskList = () => {
   };
 
   const callAddValues = (values) => {
-    console.log({ values });
     const newTask = {
       id: values.id,
       title: values.title,
@@ -54,7 +53,15 @@ const TaskList = () => {
     try {
       const response = await axios.get("http://localhost:3000/task");
       const data = response.data;
-
+      // const formattedTasks = data.map((task) => {
+      //   return {
+      //     ...task,
+      //     extra: {
+      //       start_date: task.extra.start_date, // Convert start_date to moment object
+      //       end_date: task.extra.end_date, // Convert end_date to moment object
+      //     },
+      //   };
+      // });
       setTasks(data);
 
       // if (data.length > 0) {
@@ -99,7 +106,7 @@ const TaskList = () => {
   };
 
   const callEditValues = (editedTask) => {
-    // Find the index of the edited task in the tasks array
+    // Find the index of the edited tas in the tasks array
     const { id, title, description, start_date, end_date } = editedTask;
 
     const updatedTask = {
@@ -107,12 +114,11 @@ const TaskList = () => {
       title,
       description,
       extra: {
-        start_date,
-        end_date,
+        start_date, // Convert start_date to formatted string
+        end_date, // Convert end_date to formatted string
       },
     };
     const taskIndex = tasks.findIndex((task) => task.id === editedTask.id);
-    console.log({ taskIndex });
     if (taskIndex !== -1) {
       // Create a new tasks array with the edited task
       const updatedTasks = [...tasks];
@@ -179,11 +185,16 @@ const TaskList = () => {
       title: "Start Date",
       dataIndex: ["extra", "start_date"],
       key: "start_date",
+      // render: (text) => (text ? moment(text).format("YYYY-MM-DD") : ""), // Check if text is available before formatting
+
+      inputType: "date",
     },
     {
       title: "End Date",
       dataIndex: ["extra", "end_date"],
       key: "end_date",
+      inputType: "date",
+      // render: (text) => (text ? moment(text).format("YYYY-MM-DD") : ""), // Check if text is available before formatting
     },
   ];
 

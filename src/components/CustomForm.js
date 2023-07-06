@@ -1,9 +1,9 @@
-import { Button, Form, Input } from "antd";
+import { Button, DatePicker, Form, Input } from "antd";
 import React, { useEffect } from "react";
 
 const CustomForm = ({ onFinish, columns, data, resetForm }) => {
   const [form] = Form.useForm();
-
+  console.log({ data });
   useEffect(() => {
     // customData(data);
     resetForm && form.resetFields();
@@ -12,6 +12,16 @@ const CustomForm = ({ onFinish, columns, data, resetForm }) => {
   const handleSubmit = (values) => {
     onFinish(values);
     // form.resetFields();
+  };
+
+  const renderField = (col) => {
+    if (col.inputType === "textarea") {
+      return <Input.TextArea />;
+    } else if (col.inputType === "date") {
+      return <DatePicker />;
+    } else {
+      return <Input />;
+    }
   };
 
   return (
@@ -23,7 +33,8 @@ const CustomForm = ({ onFinish, columns, data, resetForm }) => {
           label={col.title}
           rules={[{ required: true, message: `Please enter ${col.label}` }]}
         >
-          {col.inputType === "textarea" ? <Input.TextArea /> : <Input />}
+          {/* {renderField(col)} */}
+          <Input />
         </Form.Item>
       ))}
       <Form.Item>

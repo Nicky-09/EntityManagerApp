@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, Table } from "antd";
 import CustomForm from "./CustomForm";
+import moment from "moment";
 
 const CustomTable = ({
   dataSource,
@@ -14,6 +15,7 @@ const CustomTable = ({
   const [formTitle, setFormTitle] = useState();
   const [actionType, setActionType] = useState();
   const [resetForm, setResetForm] = useState(false);
+  const [updatedData, setUpdatedData] = useState([]);
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -21,6 +23,39 @@ const CustomTable = ({
   const closeModal = () => {
     setIsModalOpen(false);
     setResetForm(true);
+  };
+
+  const modifiedData = (data) => {
+    console.log({ data });
+
+    if (name === "Employee") {
+      const tmpModifiedData = {
+        id: data.id,
+        position: data.position,
+        name: data.employee_details.name,
+        address: data.employee_details.address,
+      };
+      setUpdatedData(tmpModifiedData);
+    } else if (name === "Task") {
+      const tmpModifiedData = {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        start_date: data.extra.start_date, // Convert start_date to moment object
+        end_date: data.extra.end_date,
+      };
+      console.log({ tmpModifiedData });
+      setUpdatedData(tmpModifiedData);
+    } else if (name === "Car") {
+      const tmpModifiedData = {
+        id: data.id,
+        car_name: data.car_name,
+        car_number: data.car_details.car_number,
+        car_engine: data.car_details.car_engine,
+        car_model: data.car_details.car_model,
+      };
+      setUpdatedData(tmpModifiedData);
+    }
   };
 
   const handleSubmit = (values) => {
@@ -32,6 +67,7 @@ const CustomTable = ({
   const editCallback = (record) => {
     setIsModalOpen(true);
     setFormData(record);
+    modifiedData(record);
     setFormTitle(`Edit ${name}`);
     setActionType("Edit");
   };
@@ -80,7 +116,7 @@ const CustomTable = ({
           <CustomForm
             onFinish={handleSubmit}
             columns={columns}
-            data={formData}
+            data={actionType === "Edit" ? updatedData : formData}
             resetForm={resetForm}
           />
         )}

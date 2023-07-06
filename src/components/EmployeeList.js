@@ -10,7 +10,6 @@ const EmployeeList = () => {
     fetch("http://localhost:3000/employee")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data, "data");
         setEmployeeList(data);
       })
       .catch((error) => {

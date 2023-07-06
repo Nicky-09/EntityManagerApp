@@ -18,7 +18,6 @@ const CarList = () => {
     fetch("http://localhost:3000/cars")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setCarList(data);
       })
       .catch((error) => {
@@ -36,7 +35,6 @@ const CarList = () => {
         car_model: values.car_model,
       },
     };
-    console.log(newCar);
 
     try {
       const response = await axios.post("http://localhost:3000/cars", newCar);
