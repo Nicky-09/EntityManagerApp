@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, DatePicker, Button } from "antd";
+import moment from "moment";
 
-const TaskForm = ({ onFinish, tasks }) => {
+const TaskEditForm = ({ onFinish, onCancel, task }) => {
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    if (task) {
+      // Prefill the form fields with the task data
+      form.setFieldsValue({
+        title: task.title,
+        description: task.description,
+        start_date: moment(task.extra.start_date, "DD-MM-YYYY"),
+        end_date: moment(task.extra.end_date, "DD-MM-YYYY"),
+      });
+    }
+  }, [form, task]);
+
   const handleFinish = (values) => {
-    const newTask = {
-      id: values.id,
+    const editedTask = {
+      ...task,
       title: values.title,
       description: values.description,
       extra: {
@@ -15,21 +28,10 @@ const TaskForm = ({ onFinish, tasks }) => {
       },
     };
 
-    fetch("http://localhost:3000/task", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newTask),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Task successfully posted:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    onFinish(newTask);
+    // Perform the API call to update the task
+    // ...
+
+    onFinish(editedTask);
     form.resetFields();
   };
 
@@ -71,11 +73,12 @@ const TaskForm = ({ onFinish, tasks }) => {
 
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Add
+          Save
         </Button>
+        <Button onClick={onCancel}>Cancel</Button>
       </Form.Item>
     </Form>
   );
 };
 
-export default TaskForm;
+export default TaskEditForm;

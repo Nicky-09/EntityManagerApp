@@ -1,36 +1,160 @@
 import React, { useEffect, useState } from "react";
-import TaskForm from "./TaskForm";
-import { Button, Modal, Table } from "antd";
+
+import { Modal } from "antd";
 import "./list.css";
+import axios from "axios";
+import TaskEditForm from "./TaskEditForm";
+import CustomTable from "./CustomTable";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
-  useEffect(() => {
-    fetch("http://localhost:3000/task")
+  const handleFinish = (values) => {
+    console.log({ values });
+    const newTask = {
+      id: values.id,
+      title: values.title,
+      description: values.description,
+      extra: {
+        start_date: values.start_date,
+        end_date: values.end_date,
+      },
+    };
+
+    fetch("http://localhost:3000/task", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newTask),
+    })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setTasks(data);
+        console.log("Task successfully posted:", data);
       })
       .catch((error) => {
-        console.error("Error fetching task list:", error);
+        console.error("Error:", error);
       });
+    setTasks([...tasks, newTask]);
+  };
+
+  const handleEditTask = (record) => {
+    setEditingTask(record);
+    setIsEditModalVisible(true);
+  };
+
+  useEffect(() => {
+    fetchTasks();
   }, []);
 
-  const handleAddTask = () => {
-    setIsModalVisible(true);
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/task");
+      const data = response.data;
+
+      setTasks(data);
+
+      // if (data.length > 0) {
+      //   const taskKeys = Object.keys(data[0]);
+
+      //   const taskColumns = taskKeys
+      //     .map((key) => {
+      //       if (key === "extra") {
+      //         return [
+      //           {
+      //             title: "Start Date",
+      //             dataIndex: ["extra", "start_date"],
+      //             key: "start_date",
+      //             render: (text, record) => (
+      //               <span>{record.extra?.start_date}</span>
+      //             ),
+      //           },
+      //           {
+      //             title: "End Date",
+      //             dataIndex: ["extra", "end_date"],
+      //             key: "end_date",
+      //             render: (text, record) => (
+      //               <span>{record.extra?.end_date}</span>
+      //             ),
+      //           },
+      //         ];
+      //       }
+
+      //       return {
+      //         title: key.toUpperCase(),
+      //         dataIndex: key,
+      //         key,
+      //       };
+      //     })
+      //     .flat();
+
+      //   setTaskColumns(taskColumns);
+      // }
+    } catch (error) {
+      console.error("Error fetching task list:", error);
+    }
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+  // const handleFinish = (newTask) => {
+  //   setTasks([...tasks, newTask]);
+  //   setIsModalVisible(false);
+  // };
+
+  const handleCancelEdit = () => {
+    setEditingTask(null);
+    setIsEditModalVisible(false);
   };
 
-  const handleFinish = (newTask) => {
-    console.log(newTask);
-    setTasks([...tasks, newTask]);
-    setIsModalVisible(false);
+  const handleFinishEdit = (editedTask) => {
+    // Find the index of the edited task in the tasks array
+    const taskIndex = tasks.findIndex((task) => task.id === editedTask.id);
+
+    if (taskIndex !== -1) {
+      // Create a new tasks array with the edited task
+      const updatedTasks = [...tasks];
+      updatedTasks[taskIndex] = editedTask;
+
+      setTasks(updatedTasks);
+      setIsEditModalVisible(false);
+
+      // Perform the API call to update the task
+      axios
+        .put(`http://localhost:3000/task/${editedTask.id}`, editedTask)
+        .then((response) => {
+          console.log("Task successfully updated:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error updating task:", error);
+        });
+    }
+  };
+
+  const handleDeleteTask = (record) => {
+    // Show a confirmation dialog before deleting the task
+    Modal.confirm({
+      title: "Delete Task",
+      content: "Are you sure you want to delete this task?",
+      okText: "Delete",
+      cancelText: "Cancel",
+      onOk: () => {
+        // Perform the delete operation
+        const taskId = record.id;
+
+        axios
+          .delete(`http://localhost:3000/task/${taskId}`)
+          .then((response) => {
+            console.log("Task successfully deleted:", response.data);
+            // Remove the deleted task from the tasks list
+            const updatedTasks = tasks.filter((task) => task.id !== taskId);
+            setTasks(updatedTasks);
+          })
+          .catch((error) => {
+            console.error("Error deleting task:", error);
+          });
+      },
+    });
   };
 
   const taskColumns = [
@@ -59,33 +183,33 @@ const TaskList = () => {
       dataIndex: ["extra", "end_date"],
       key: "end_date",
     },
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   render: (_, record) => (
-    //     <Space size="middle">
-    //       <a onClick={() => handleUpdate(record)}>Update</a>
-    //       <a onClick={() => handleDelete(record.employee_id)}>Delete</a>
-    //     </Space>
-    //   ),
-    // },
   ];
 
   return (
     <div>
-      <div className="task-header">
-        <h2>Task List</h2>
-        <Button onClick={handleAddTask}>Add Task</Button>
-      </div>
       <Modal
-        title="Add Task"
-        open={isModalVisible}
-        onCancel={handleCancel}
+        title="Edit Task"
+        open={isEditModalVisible}
+        onCancel={handleCancelEdit}
         footer={null}
       >
-        <TaskForm onFinish={handleFinish} tasks={tasks} />
+        {editingTask && (
+          <TaskEditForm
+            onFinish={handleFinishEdit}
+            onCancel={handleCancelEdit}
+            task={editingTask}
+          />
+        )}
       </Modal>
-      <Table dataSource={tasks} columns={taskColumns} />
+      <CustomTable
+        dataSource={tasks}
+        columns={taskColumns}
+        name={"Task"}
+        tasks={tasks}
+        handleFinish={handleFinish}
+        handleEditTask={handleEditTask}
+        handleDeleteTask={handleDeleteTask}
+      />
     </div>
   );
 };
