@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal } from "antd";
 import CustomTable from "./CustomTable";
 import axios from "axios";
+import { url } from "../config";
 
 const CarList = () => {
   const [carList, setCarList] = useState([]);
@@ -16,7 +17,7 @@ const CarList = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3000/cars")
+    fetch(`${url}/cars`)
       .then((response) => response.json())
       .then((data) => {
         setCarList(data);
@@ -83,7 +84,7 @@ const CarList = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:3000/cars", newCar);
+      const response = await axios.post(`${url}/cars`, newCar);
       const data = response.data;
       console.log("Car successfully posted:", data);
     } catch (error) {
@@ -121,7 +122,7 @@ const CarList = () => {
 
       // Perform the API call to update the task
       axios
-        .put(`http://localhost:3000/cars/${editedTask.id}`, updatedTask)
+        .put(`${url}/cars/${editedTask.id}`, updatedTask)
         .then((response) => {
           console.log("Car successfully updated:", response.data);
         })
@@ -143,7 +144,7 @@ const CarList = () => {
         const taskId = record.id;
 
         axios
-          .delete(`http://localhost:3000/cars/${taskId}`)
+          .delete(`${url}/cars/${taskId}`)
           .then((response) => {
             console.log("Task successfully deleted:", response.data);
             // Remove the deleted task from the tasks list

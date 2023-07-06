@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import CustomTable from "./CustomTable";
 import axios from "axios";
 import { Modal } from "antd";
+import { url } from "../config";
 
 const EmployeeList = () => {
   const [employeeList, setEmployeeList] = useState([]);
   const [employeeColumns, setEmployeeColumns] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/employee")
+    fetch(`${url}/employee`)
       .then((response) => response.json())
       .then((data) => {
         setEmployeeList(data);
@@ -74,10 +75,7 @@ const EmployeeList = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/employee",
-        newEmployee
-      );
+      const response = await axios.post(`${url}/employee`, newEmployee);
       const data = response.data;
       console.log("Employee successfully posted:", data);
     } catch (error) {
@@ -143,7 +141,7 @@ const EmployeeList = () => {
 
       // Perform the API call to update the task
       axios
-        .put(`http://localhost:3000/employee/${editedTask.id}`, updatedTask)
+        .put(`${url}/employee/${editedTask.id}`, updatedTask)
         .then((response) => {
           console.log("Employee successfully updated:", response.data);
         })
@@ -165,7 +163,7 @@ const EmployeeList = () => {
         const taskId = record.id;
 
         axios
-          .delete(`http://localhost:3000/employee/${taskId}`)
+          .delete(`${url}/employee/${taskId}`)
           .then((response) => {
             console.log("Employee successfully deleted:", response.data);
             // Remove the deleted task from the tasks list

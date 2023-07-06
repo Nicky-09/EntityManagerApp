@@ -5,6 +5,7 @@ import "./list.css";
 import axios from "axios";
 import CustomTable from "./CustomTable";
 import moment from "moment";
+import { url } from "../config";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -29,7 +30,7 @@ const TaskList = () => {
       },
     };
 
-    fetch("http://localhost:3000/task", {
+    fetch(`${url}/task`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +53,7 @@ const TaskList = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/task");
+      const response = await axios.get(`${url}/task`);
       const data = response.data;
       // const formattedTasks = data.map((task) => {
       //   return {
@@ -131,7 +132,7 @@ const TaskList = () => {
 
       // Perform the API call to update the task
       axios
-        .put(`http://localhost:3000/task/${editedTask.id}`, updatedTask)
+        .put(`${url}/task/${editedTask.id}`, updatedTask)
         .then((response) => {
           console.log("Task successfully updated:", response.data);
         })
@@ -153,7 +154,7 @@ const TaskList = () => {
         const taskId = record.id;
 
         axios
-          .delete(`http://localhost:3000/task/${taskId}`)
+          .delete(`${url}/task/${taskId}`)
           .then((response) => {
             console.log("Task successfully deleted:", response.data);
             // Remove the deleted task from the tasks list
