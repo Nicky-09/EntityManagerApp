@@ -1,25 +1,96 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from "@ant-design/icons";
+import { Layout, Menu, Button, theme } from "antd";
+import TaskList from "./components/TaskList";
+import CarList from "./components/CarList";
+import EmployeeList from "./components/EmployeeList";
 
-function App() {
+const { Header, Sider, Content } = Layout;
+
+const App = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState("1");
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
+  const handleMenuClick = ({ key }) => {
+    setSelectedMenu(key);
+  };
+
+  const renderComponent = () => {
+    switch (selectedMenu) {
+      case "1":
+        return <TaskList />;
+      case "2":
+        return <CarList />;
+      case "3":
+        return <EmployeeList />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Layout>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <div className="demo-logo-vertical" />
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          onClick={handleMenuClick}
+          items={[
+            {
+              key: "1",
+              icon: <UserOutlined />,
+              label: "Task",
+            },
+            {
+              key: "2",
+              icon: <VideoCameraOutlined />,
+              label: "Car",
+            },
+            {
+              key: "3",
+              icon: <UploadOutlined />,
+              label: "Employee",
+            },
+          ]}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ padding: 0, background: colorBgContainer }}>
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              fontSize: "16px",
+              width: 64,
+              height: 64,
+            }}
+          />
+        </Header>
+        <Content
+          style={{
+            margin: "24px 16px",
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer,
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          {renderComponent()}
+        </Content>
+      </Layout>
+    </Layout>
   );
-}
+};
 
 export default App;
