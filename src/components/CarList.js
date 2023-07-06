@@ -5,8 +5,14 @@ import axios from "axios";
 
 const CarList = () => {
   const [carList, setCarList] = useState([]);
-  const [editingTask, setEditingTask] = useState(null);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
+  const handleFinish = (values, actionType) => {
+    if (actionType === "Add") {
+      callAddValues(values);
+    } else {
+      callEditValues(values);
+    }
+  };
 
   useEffect(() => {
     fetch("http://localhost:3000/cars")
@@ -20,7 +26,7 @@ const CarList = () => {
       });
   }, []);
 
-  const handleFinish = async (values) => {
+  const callAddValues = async (values) => {
     const newCar = {
       id: values.id,
       car_name: values.car_name,
@@ -43,16 +49,11 @@ const CarList = () => {
   };
 
   const handleEditTask = (record) => {
-    setEditingTask(record);
-    setIsEditModalVisible(true);
+    // setEditingTask(record);
+    // setIsEditModalVisible(true);
   };
 
-  const handleCancelEdit = () => {
-    setEditingTask(null);
-    setIsEditModalVisible(false);
-  };
-
-  const handleFinishEdit = (editedTask) => {
+  const callEditValues = (editedTask) => {
     // Find the index of the edited task in the tasks array
     const taskIndex = carList.findIndex((task) => task.id === editedTask.id);
 
@@ -62,7 +63,6 @@ const CarList = () => {
       updatedTasks[taskIndex] = editedTask;
 
       setCarList(updatedTasks);
-      setIsEditModalVisible(false);
 
       // Perform the API call to update the task
       axios
@@ -132,20 +132,6 @@ const CarList = () => {
 
   return (
     <div>
-      <Modal
-        title="Edit Task"
-        open={isEditModalVisible}
-        onCancel={handleCancelEdit}
-        footer={null}
-      >
-        {/* {editingTask && (
-          <TaskEditForm
-            onFinish={handleFinishEdit}
-            onCancel={handleCancelEdit}
-            task={editingTask}
-          />
-        )} */}
-      </Modal>
       <CustomTable
         columns={carColumns}
         dataSource={carList}

@@ -3,15 +3,21 @@ import React, { useEffect, useState } from "react";
 import { Modal } from "antd";
 import "./list.css";
 import axios from "axios";
-import TaskEditForm from "./TaskEditForm";
 import CustomTable from "./CustomTable";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const [editingTask, setEditingTask] = useState(null);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
-  const handleFinish = (values) => {
+  const handleFinish = (values, actionType) => {
+    console.log("aaya");
+    if (actionType === "Add") {
+      callAddValues(values);
+    } else if (actionType === "Edit") {
+      callEditValues(values);
+    }
+  };
+
+  const callAddValues = (values) => {
     console.log({ values });
     const newTask = {
       id: values.id,
@@ -41,8 +47,8 @@ const TaskList = () => {
   };
 
   const handleEditTask = (record) => {
-    setEditingTask(record);
-    setIsEditModalVisible(true);
+    // setEditingTask(record);
+    // setIsEditModalVisible(true);
   };
 
   useEffect(() => {
@@ -102,22 +108,22 @@ const TaskList = () => {
   //   setIsModalVisible(false);
   // };
 
-  const handleCancelEdit = () => {
-    setEditingTask(null);
-    setIsEditModalVisible(false);
-  };
+  // const handleCancelEdit = () => {
+  //   setEditingTask(null);
+  //   setIsEditModalVisible(false);
+  // };
 
-  const handleFinishEdit = (editedTask) => {
+  const callEditValues = (editedTask) => {
     // Find the index of the edited task in the tasks array
     const taskIndex = tasks.findIndex((task) => task.id === editedTask.id);
-
+    console.log({ taskIndex });
     if (taskIndex !== -1) {
       // Create a new tasks array with the edited task
       const updatedTasks = [...tasks];
       updatedTasks[taskIndex] = editedTask;
 
       setTasks(updatedTasks);
-      setIsEditModalVisible(false);
+      // setIsEditModalVisible(false);
 
       // Perform the API call to update the task
       axios
@@ -187,20 +193,14 @@ const TaskList = () => {
 
   return (
     <div>
-      <Modal
+      {/* <Modal
         title="Edit Task"
         open={isEditModalVisible}
         onCancel={handleCancelEdit}
         footer={null}
       >
-        {editingTask && (
-          <TaskEditForm
-            onFinish={handleFinishEdit}
-            onCancel={handleCancelEdit}
-            task={editingTask}
-          />
-        )}
-      </Modal>
+        {editingTask && <CustomForm />}
+      </Modal> */}
       <CustomTable
         dataSource={tasks}
         columns={taskColumns}

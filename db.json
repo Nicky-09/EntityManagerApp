@@ -1,103 +1,57 @@
 {
   "task": [
     {
-      "id": 2,
-      "title": "Taskd",
-      "description": "Descriptio",
-      "extra": {
-        "start_date": "26-06-2023",
-        "end_date": "26-06-2023"
-      }
-    },
-    {
-      "id": 4,
-      "title": "rishuuu",
-      "description": "efvev fff",
-      "extra": {
-        "start_date": "25-07-2023",
-        "end_date": "24-07-2023"
-      }
-    },
-    {
       "id": 5,
+      "title": "task editwqfegr",
+      "description": "taskkkkeqfwgeb",
+      "start_date": "wgerr",
+      "end_date": "qfwge"
+    },
+    {
+      "id": "23",
+      "title": "title",
+      "description": "desc",
+      "extra": {
+        "start_date": "1234",
+        "end_date": "422"
+      }
+    },
+    {
+      "id": "2354y5",
+      "title": "14523y54u",
+      "description": "42534y5",
+      "extra": {
+        "start_date": "5263y456",
+        "end_date": "25345"
+      }
+    },
+    {
+      "id": "511111111",
       "title": "task edit",
       "description": "taskkkk",
       "extra": {
-        "start_date": "18-07-2023",
-        "end_date": "08-07-2023"
+        "start_date": "1111",
+        "end_date": "1111"
       }
     }
   ],
   "cars": [
     {
-      "id": 2,
-      "car_name": "car 2",
+      "id": "1234",
+      "car_name": "1423r4",
       "car_details": {
-        "car_number": 1234,
-        "car_engine": "v7",
-        "car_model": "v23"
-      }
-    },
-    {
-      "id": 3,
-      "car_name": "car 3",
-      "car_details": {
-        "car_number": 124,
-        "car_engine": "v6",
-        "car_model": "v24"
-      }
-    },
-    {
-      "id": 5,
-      "car_name": "dv",
-      "car_details": {
-        "car_number": "dvdv",
-        "car_engine": "dvd",
-        "car_model": "dvd"
-      }
-    },
-    {
-      "id": 4,
-      "car_name": "dvcds",
-      "employee_details": {
-        "name": "dvdv",
-        "address": "dvd"
-      }
-    },
-    {
-      "id": "wefr",
-      "car_name": "qweer",
-      "car_details": {
-        "car_number": "qerwer",
-        "car_engine": "qewre",
-        "car_model": "qrwet"
+        "car_number": "2t3",
+        "car_engine": "123t4",
+        "car_model": "15234y5"
       }
     }
   ],
   "employee": [
     {
-      "id": "abcdf3xjsd",
-      "position": "Sr Backend",
-      "employee_details": {
-        "name": "abcdfad",
-        "address": "adfadf"
-      }
-    },
-    {
-      "id": "abcdx89#@",
-      "position": "HR",
-      "employee_details": {
-        "name": "adfbd",
-        "address": "xyaasdfadfz"
-      }
-    },
-    {
-      "id": "234",
-      "position": "2435",
-      "employee_details": {
-        "name": "12435465u",
-        "address": "1245364"
-      }
+      "id": "1111",
+      "position": "111qfwegrb",
+      "name": "wesdbrfg",
+      "address": "wegrt"
     }
   ]
 }

@@ -5,8 +5,6 @@ import { Modal } from "antd";
 
 const EmployeeList = () => {
   const [employeeList, setEmployeeList] = useState([]);
-  const [editingTask, setEditingTask] = useState(null);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:3000/employee")
@@ -20,7 +18,15 @@ const EmployeeList = () => {
       });
   }, []);
 
-  const handleFinish = async (values) => {
+  const handleFinish = (values, actionType) => {
+    if (actionType === "Add") {
+      callAddValues(values);
+    } else {
+      callEditValues(values);
+    }
+  };
+
+  const callAddValues = async (values) => {
     const newEmployee = {
       id: values.id,
       position: values.position,
@@ -67,15 +73,15 @@ const EmployeeList = () => {
   ];
 
   const handleEditTask = (record) => {
-    setEditingTask(record);
-    setIsEditModalVisible(true);
+    // setEditingTask(record);
+    // setIsEditModalVisible(true);
   };
-  const handleCancelEdit = () => {
-    setEditingTask(null);
-    setIsEditModalVisible(false);
-  };
+  // const handleCancelEdit = () => {
+  //   setEditingTask(null);
+  //   setIsEditModalVisible(false);
+  // };
 
-  const handleFinishEdit = (editedTask) => {
+  const callEditValues = (editedTask) => {
     // Find the index of the edited task in the tasks array
     const taskIndex = employeeList.findIndex(
       (task) => task.id === editedTask.id
@@ -87,7 +93,6 @@ const EmployeeList = () => {
       updatedTasks[taskIndex] = editedTask;
 
       setEmployeeList(updatedTasks);
-      setIsEditModalVisible(false);
 
       // Perform the API call to update the task
       axios
@@ -131,20 +136,6 @@ const EmployeeList = () => {
 
   return (
     <div>
-      <Modal
-        title="Edit Task"
-        open={isEditModalVisible}
-        onCancel={handleCancelEdit}
-        footer={null}
-      >
-        {/* {editingTask && (
-          <TaskEditForm
-            onFinish={handleFinishEdit}
-            onCancel={handleCancelEdit}
-            task={editingTask}
-          />
-        )} */}
-      </Modal>
       <CustomTable
         columns={employeeColumns}
         dataSource={employeeList}

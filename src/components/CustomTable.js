@@ -12,18 +12,38 @@ const CustomTable = ({
   handleDeleteTask,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [formData, setFormData] = useState({});
+  const [formTitle, setFormTitle] = useState();
+  const [actionType, setActionType] = useState();
+  const [resetForm, setResetForm] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setResetForm(true);
   };
 
   const handleSubmit = (values) => {
-    closeModal();
-    handleFinish(values);
+    // closeModal();
+    setIsModalOpen(false);
+    handleFinish(values, actionType);
+  };
+
+  const editCallback = (record) => {
+    setIsModalOpen(true);
+    setFormData(record);
+    setFormTitle(`Edit ${name}`);
+    setActionType("Edit");
+    handleEditTask(record);
+  };
+
+  const handleAdd = () => {
+    setFormData({});
+    setActionType("Add");
+    openModal();
+    setFormTitle(`Add ${name}`);
   };
 
   const taskActions = [
@@ -32,7 +52,7 @@ const CustomTable = ({
       dataIndex: "edit",
       key: "edit",
       render: (_, record) => (
-        <Button onClick={() => handleEditTask(record)}>Edit</Button>
+        <Button onClick={() => editCallback(record)}>Edit</Button>
       ),
     },
     {
@@ -51,15 +71,23 @@ const CustomTable = ({
     <div>
       <div className="task-header">
         <h2>{name} List</h2>
-        <Button onClick={openModal}>Add {name}</Button>
+        <Button onClick={handleAdd}>Add {name}</Button>
       </div>
       <Modal
-        title={`Add ${name}`}
+        title={formTitle}
         open={isModalOpen}
         onCancel={closeModal}
         footer={null}
       >
-        <CustomForm onFinish={handleSubmit} tasks={tasks} columns={columns} />
+        {isModalOpen && (
+          <CustomForm
+            onFinish={handleSubmit}
+            tasks={tasks}
+            columns={columns}
+            data={formData}
+            resetForm={resetForm}
+          />
+        )}
       </Modal>
       <Table dataSource={dataSource} columns={updatedTaskColumns} />;
     </div>
