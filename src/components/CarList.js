@@ -7,11 +7,10 @@ import { url } from "../config";
 const CarList = () => {
   const [carList, setCarList] = useState([]);
   const [taskColumns, setTaskColumns] = useState([]);
-
   const handleFinish = (values, actionType) => {
     if (actionType === "Add") {
       callAddValues(values);
-    } else {
+    } else if (actionType === "Edit") {
       callEditValues(values);
     }
   };
@@ -30,7 +29,7 @@ const CarList = () => {
               if (key === "car_details") {
                 return [
                   {
-                    title: "Car num",
+                    title: "Car Number",
                     dataIndex: ["car_details", "car_number"],
                     key: "car_number",
                     render: (text, record) => (
@@ -38,7 +37,7 @@ const CarList = () => {
                     ),
                   },
                   {
-                    title: "Car eng",
+                    title: "Car Engine",
                     dataIndex: ["car_details", "car_engine"],
                     key: "car_engine",
                     render: (text, record) => (
@@ -46,7 +45,7 @@ const CarList = () => {
                     ),
                   },
                   {
-                    title: "Car mod",
+                    title: "Car Model",
                     dataIndex: ["car_details", "car_model"],
                     key: "car_model",
                     render: (text, record) => (

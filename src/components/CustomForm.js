@@ -14,15 +14,15 @@ const CustomForm = ({ onFinish, columns, data, resetForm }) => {
     // form.resetFields();
   };
 
-  const renderField = (col) => {
-    if (col.inputType === "textarea") {
-      return <Input.TextArea />;
-    } else if (col.inputType === "date") {
-      return <DatePicker />;
-    } else {
-      return <Input />;
-    }
-  };
+  // const renderField = (col) => {
+  //   if (col.inputType === "textarea") {
+  //     return <Input.TextArea />;
+  //   } else if (col.inputType === "date") {
+  //     return <DatePicker />;
+  //   } else {
+  //     return <Input />;
+  //   }
+  // };
 
   return (
     <Form form={form} onFinish={handleSubmit} layout="vertical">
@@ -34,7 +34,7 @@ const CustomForm = ({ onFinish, columns, data, resetForm }) => {
           rules={[{ required: true, message: `Please enter ${col.label}` }]}
         >
           {/* {renderField(col)} */}
-          <Input />
+          <Input disabled={col.key === "id"} />
         </Form.Item>
       ))}
       <Form.Item>

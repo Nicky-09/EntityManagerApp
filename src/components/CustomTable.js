@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Space, Table } from "antd";
 import CustomForm from "./CustomForm";
 import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const CustomTable = ({
@@ -74,7 +75,8 @@ const CustomTable = ({
   };
 
   const handleAdd = () => {
-    setFormData({});
+    const newId = uuidv4();
+    setFormData({ id: newId });
     setActionType("Add");
     openModal();
     setFormTitle(`Add ${name}`);

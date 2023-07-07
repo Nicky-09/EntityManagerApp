@@ -59,7 +59,7 @@ const EmployeeList = () => {
   const handleFinish = (values, actionType) => {
     if (actionType === "Add") {
       callAddValues(values);
-    } else {
+    } else if (actionType === "Edit") {
       callEditValues(values);
     }
   };
