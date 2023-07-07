@@ -37,7 +37,7 @@ Your json-server is running on `localhost:3001`
 
 ## Important Links - 
 - Frontend Deployment - https://entity-manager-app.vercel.app/
-- Json-server Deployment - json-server-roan.vercel.app
+- Json-server Deployment - [json-server-roan.vercel.app](https://json-server-y358.onrender.com)
 - Github - https://github.com/Nicky-09/json-server
 
 
