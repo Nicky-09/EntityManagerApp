@@ -21,7 +21,7 @@ This project is a simple management system that allows you to add, edit, and del
 
 ## Installation
 
-1. `cd Project_Folder`
+1. `cd Project_Folder `
 2.  Run `npm install`
 
 ## Run the Project
