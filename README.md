@@ -30,7 +30,7 @@ This project is a simple management system that allows you to add, edit, and del
 1. `cd Project_Folder`
 2. Run `npm start`
 
-Your frontend server will be running on `localhost:3000/`
+Your  frontend server will be running on `localhost:3000/`
 
 3. Run `json-server --watch db.json`
 
